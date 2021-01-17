@@ -1,0 +1,1 @@
+c++ main.cpp petri_net.cpp
