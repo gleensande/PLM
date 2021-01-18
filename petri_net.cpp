@@ -108,7 +108,6 @@ bool Petri_net::check_transition_use(Transition transition) {
     return is_ok;
 }
 
-
 vector<int> Petri_net::check_possible_ts() {
     set<int> ts;  // Доступные направления Т
     int position;  
@@ -128,4 +127,14 @@ vector<int> Petri_net::check_possible_ts() {
     }
 
     return possible_ts;
+}
+
+void Petri_net::use_transition(int ts_num) {
+    Transition current_ts = T[ts_num];
+    for (int i = 0; i < current_ts.input_arcs.size(); i++) {
+        P[current_ts.input_arcs[i]].chip_count--;  // Сняли по 1 чипсе с каждой Position на входе в Т
+    }
+    for (int i = 0; i < current_ts.output_arcs.size(); i++) {
+        P[current_ts.output_arcs[i]].chip_count++;  // Добавили по 1 чипсе на каждую Position на выходе из Т
+    }
 }
