@@ -1,1 +1,1 @@
-c++ main.cpp petri_net.cpp
+c++ main.cpp petri_net.cpp graph.cpp
