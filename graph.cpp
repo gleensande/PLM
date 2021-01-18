@@ -29,21 +29,21 @@ void Graph::add_end_arc_to_current() {
     arcs_values.push_back(END_T);
 }
 
-int Graph::use_transition(int t_num, vector<int>& chips_positions) {
+bool Graph::use_transition(int t_num, vector<int>& chips_positions) {
     int loop_pair;
     for (int i = 0; i < arcs_values.size(); i++) {
         if (arcs[i].first == current && arcs_values[i] == t_num) {
             if ((loop_pair = check_loop(chips_positions)) != -1) {
                 vertices[arcs[i].second] = LOOP;
                 loops.push_back(make_pair(loop_pair, arcs[i].second));
-                return backtrack();
+                return false;
             } else {
                 current = arcs[i].second;
                 vertices[current] = chips_positions;
             }
         }
     }
-    return 0;
+    return true;
 }
 
 void Graph::print() {
@@ -69,7 +69,11 @@ void Graph::print() {
     }
     cout << "Arcs: " << endl;
     for (int i = 0; i < arcs.size(); i++) {
-        cout << arcs[i].first << "----" << arcs_values[i] << "--->" << arcs[i].second << endl;
+        if(arcs_values[i] == END_T){
+            cout << arcs[i].first << "----E--->" << arcs[i].second << endl;
+        } else {
+            cout << arcs[i].first << "----" << arcs_values[i] << "--->" << arcs[i].second << endl;
+        }
     }
     cout << endl;
 }

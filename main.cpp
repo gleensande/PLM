@@ -1,6 +1,10 @@
 #include "petri_net.hpp"
 #include "graph.hpp"
 
+
+#define NO -1
+#define LOOP -2
+
 int main() {
     // создание сети Петри
     Petri_net P;
@@ -18,7 +22,7 @@ int main() {
     start_chips.push_back(make_pair(5, 1));
     P.set_start_chips(start_chips);
 
-    // создание графа результата и его заполнение
+    // создание графа результата
     Graph G;
 
     // добавление первой вершины в граф
@@ -38,6 +42,7 @@ int main() {
             cout << possible_ts_nums[i] << " ";
         }
         cout << endl;
+
         if (possible_ts_nums.size() != 0) {
             G.add_possible_arcs_to_current(possible_ts_nums);
         } else {
@@ -46,26 +51,30 @@ int main() {
         G.print();
 
         // получение и выполнение следующего перехода
-        cout << "USE TRANSITION:" << endl;
-        next_ts = G.get_next_transition();
-        current_chips_position_in_G = G.get_current_chips_position();
-        cout << "Newx T = " << next_ts << endl;
-        if (next_ts == -1) {
-            stop = true;
-        } else {
+        bool is_loop = true;
+        while (is_loop) {
+            next_ts = G.get_next_transition();
+            current_chips_position_in_G = G.get_current_chips_position();
+            cout << "Next T = " << next_ts << endl;
+            if (next_ts == NO) {
+                stop = true;
+                break;
+            }
+
             P.use_transition(next_ts, current_chips_position_in_G);
             chips_positions = P.check_chips();
+
             cout << "Chips_positions" << endl;
             for (int i = 0; i < chips_positions.size(); i++) {
                 cout << chips_positions[i] << " ";
             }
             cout << endl;
-            if (!G.use_transition(next_ts, chips_positions)) {
-                current_chips_position_in_G = G.get_current_chips_position();
-                //P.use_transition(next_ts, current_chips_position_in_G);
-            }
+
+            is_loop = !G.use_transition(next_ts, chips_positions);
+
             G.print();
         }
+        
     }
 
     G.print();
