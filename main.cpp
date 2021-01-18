@@ -13,6 +13,11 @@ int main() {
         start_chips.push_back(make_pair(v, chip_num));
     }
     P.set_start_chips(start_chips);
+
+    vector<int> k = P.check_chips();
+    vector<int> m = P.check_possible_ts();
+    //P.print();
+
     P.print();
 
     Graph G;
