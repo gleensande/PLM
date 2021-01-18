@@ -1,4 +1,5 @@
 #include "petri_net.hpp"
+#include "graph.hpp"
 
 int main() {
     Petri_net P;
@@ -12,7 +13,25 @@ int main() {
         start_chips.push_back(make_pair(v, chip_num));
     }
     P.set_start_chips(start_chips);
+
     vector<int> k = P.check_chips();
     vector<int> m = P.check_possible_ts();
     //P.print();
+
+    P.print();
+
+    Graph G;
+
+    vector<int> chips_positions = {5, 6};
+    G.add_first_vertex(chips_positions);
+    G.print();
+
+    vector<int> possible_ts_nums = {1, 5};
+    G.add_possible_arcs_to_current(possible_ts_nums);
+    G.print();
+
+    int t_num = 1;
+    vector<int> chips_positions_1 = {1, 5};
+    G.use_transition(t_num, chips_positions_1);
+    G.print();
 }
