@@ -22,14 +22,11 @@ void Graph::add_possible_arcs_to_current(vector<int>& possible_ts_nums) {
     }
 }
 
-void Graph::add_end_arcs_to_current(vector<int>& end_ts_nums) {
-    int end_i;
-    for (int i = 0; i < end_ts_nums.size(); i++) {
-        vertices.push_back(END);
-        end_i = vertices.size() - 1;
-        arcs.push_back(make_pair(current, end_i));
-        arcs_values.push_back(end_ts_nums[i]);
-    }
+void Graph::add_end_arc_to_current() {
+    vertices.push_back(END);
+    int end_i = vertices.size() - 1;
+    arcs.push_back(make_pair(current, end_i));
+    arcs_values.push_back(END_T);
 }
 
 void Graph::use_transition(int t_num, vector<int>& chips_positions) {

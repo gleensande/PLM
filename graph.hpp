@@ -4,6 +4,8 @@
 
 using namespace std;
 
+#define END_T -1
+
 class Graph {
  private:
     vector<int> END, LOOP, POSSIBLE;
@@ -17,7 +19,7 @@ class Graph {
     Graph();
     void add_first_vertex(vector<int>& chips_positions);
     void add_possible_arcs_to_current(vector<int>& possible_ts_nums);
-    void add_end_arcs_to_current(vector<int>& end_ts_nums);
+    void add_end_arc_to_current();
     void use_transition(int t_num, vector<int>& chips_positions);
     void print();
     int check_loop(vector<int>& chips_positions);

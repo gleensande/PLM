@@ -124,7 +124,6 @@ vector<int> Petri_net::check_possible_ts() {
     for (auto t : ts) {
         if (check_transition_use(T[t])) {  // Проверка, можно ли пройти через Т
             possible_ts.push_back(t);
-            cout << t << endl;
         }
     }
 
