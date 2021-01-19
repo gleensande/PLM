@@ -82,7 +82,9 @@ vector<int> Petri_net::check_chips() {
     vector<int> P_with_chips;
     for (int i = 0; i < P.size(); i++) {
         if (P[i].chip_count != 0) {
-            P_with_chips.push_back(i);
+            for (int j = 0; j < P[i].chip_count; j++) {
+                P_with_chips.push_back(i);
+            }
         }
     }
     return P_with_chips;
@@ -108,7 +110,6 @@ bool Petri_net::check_transition_use(Transition transition) {
     return is_ok;
 }
 
-
 vector<int> Petri_net::check_possible_ts() {
     set<int> ts;  // Доступные направления Т
     int position;  
@@ -128,4 +129,59 @@ vector<int> Petri_net::check_possible_ts() {
     }
 
     return possible_ts;
+}
+
+void Petri_net::use_transition(int ts_num, vector<int>& current_chips_pos_in_G) {
+    // установка начальных позиций фишек
+    // установка начальных позиций фишек
+    for (int i = 0; i < P.size(); i++) {
+        P[i].chip_count = 0;
+    }
+    for (int i = 0; i < current_chips_pos_in_G.size(); i++) {
+        P[current_chips_pos_in_G[i]].chip_count++;
+    }
+
+    // выполнение перехода
+    Transition current_ts = T[ts_num];
+    for (int i = 0; i < current_ts.input_arcs.size(); i++) {
+        P[current_ts.input_arcs[i]].chip_count--;  // Сняли по 1 чипсе с каждой Position на входе в Т
+    }
+    for (int i = 0; i < current_ts.output_arcs.size(); i++) {
+        P[current_ts.output_arcs[i]].chip_count++;  // Добавили по 1 чипсе на каждую Position на выходе из Т
+    }
+
+    // обновление вектора весов после выполнения перехода
+    vector<pair <int, int> > new_chips_positions;
+    vector<int> curr_chips = check_chips();
+    new_chips_positions.push_back(make_pair(curr_chips[0], 1));
+    for (int i = 1; i < curr_chips.size(); i++) {
+        if (curr_chips[i] == curr_chips[i-1]) {
+            new_chips_positions[new_chips_positions.size() -1].second++;
+        } else {
+            new_chips_positions.push_back(make_pair(curr_chips[i], 1));           
+        }
+    }
+    chips_positions = new_chips_positions;
+}
+
+void Petri_net::update_chip_position(vector<int>& current_chips_pos_in_G) {
+    // установка начальных позиций фишек
+    for (int i = 0; i < P.size(); i++) {
+        P[i].chip_count = 0;
+    }
+    for (int i = 0; i < current_chips_pos_in_G.size(); i++) {
+        P[current_chips_pos_in_G[i]].chip_count++;
+    }
+
+    // обновление вектора весов
+    vector<pair <int, int> > new_chips_positions;
+    new_chips_positions.push_back(make_pair(current_chips_pos_in_G[0], 1));
+    for (int i = 1; i < current_chips_pos_in_G.size(); i++) {
+        if (current_chips_pos_in_G[i] == current_chips_pos_in_G[i-1]) {
+            new_chips_positions[new_chips_positions.size() -1].second++;
+        } else {
+            new_chips_positions.push_back(make_pair(current_chips_pos_in_G[i], 1));           
+        }
+    }
+    chips_positions = new_chips_positions;
 }

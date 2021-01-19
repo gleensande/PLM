@@ -29,19 +29,21 @@ void Graph::add_end_arc_to_current() {
     arcs_values.push_back(END_T);
 }
 
-void Graph::use_transition(int t_num, vector<int>& chips_positions) {
+bool Graph::use_transition(int t_num, vector<int>& chips_positions) {
     int loop_pair;
     for (int i = 0; i < arcs_values.size(); i++) {
         if (arcs[i].first == current && arcs_values[i] == t_num) {
             if ((loop_pair = check_loop(chips_positions)) != -1) {
                 vertices[arcs[i].second] = LOOP;
                 loops.push_back(make_pair(loop_pair, arcs[i].second));
+                return false;
             } else {
                 current = arcs[i].second;
                 vertices[current] = chips_positions;
             }
         }
     }
+    return true;
 }
 
 void Graph::print() {
@@ -51,9 +53,9 @@ void Graph::print() {
         cout << i << ". {";
         if (vertices[i][0] < 0) {
             switch(vertices[i][0]) {
-                case -1: cout << "END";
-                case -2: cout << "LOOP";
-                case -3: cout << "POSSIBLE";
+                case -1: cout << "END"; break;
+                case -2: cout << "LOOP"; break;
+                case -3: cout << "POSSIBLE"; break;
             }
         } else {
             for (int j = 0; j < vertices[i].size(); j++) {
@@ -67,7 +69,11 @@ void Graph::print() {
     }
     cout << "Arcs: " << endl;
     for (int i = 0; i < arcs.size(); i++) {
-        cout << arcs[i].first << "----" << arcs_values[i] << "--->" << arcs[i].second << endl;
+        if(arcs_values[i] == END_T){
+            cout << arcs[i].first << "----E--->" << arcs[i].second << endl;
+        } else {
+            cout << arcs[i].first << "----" << arcs_values[i] << "--->" << arcs[i].second << endl;
+        }
     }
     cout << endl;
 }
@@ -92,7 +98,47 @@ int Graph::get_next_transition() {
     return backtrack();
 }
 
-int Graph::backtrack() {
-    // TODO
+int Graph::get_any_possible_arc(int v) {
+    for (int i = 0; i < arcs.size(); i++) {
+        if (arcs[i].first == v && vertices[arcs[i].second] == POSSIBLE) {
+            return i;
+        }
+    }
+
     return -1;
+}
+
+bool Graph::has_possible_arcs() {
+    for (int i = 0; i < vertices.size(); i++) {
+        if (vertices[i] == POSSIBLE) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int Graph::backtrack() {
+    cout << "BACKTRACK:" << endl;
+    while(get_any_possible_arc(current) == -1 && has_possible_arcs()) {
+        int new_current = -1;
+        for (int i = 0; i < arcs.size() && new_current == -1; i++) {
+            if (arcs[i].second == current) {
+                new_current = arcs[i].first;
+            }
+        }
+        current = new_current;
+        cout << current << " ";
+    }
+    cout << endl;
+
+    if (has_possible_arcs()) {
+        return arcs_values[get_any_possible_arc(current)];
+    }
+    
+    return -1;
+}
+
+vector<int> Graph::get_current_chips_position() {
+    return vertices[current];
 }
