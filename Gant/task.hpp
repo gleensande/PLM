@@ -10,7 +10,7 @@ class Task {
     int weight;
  public:
     void create(std::string _task_name, int _start_time, int _end_time);
-    void print_data();
+    void print();
     int get_start_time();
     int get_end_time();
     int get_weight();

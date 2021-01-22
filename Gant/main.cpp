@@ -42,11 +42,34 @@ int main() {
     }
     input.close();
 
-    Gant.print_graph();
-    int start = Gant.search_earliest_task();
-    int end = Gant.search_latest_task();
-    cout << start << " " << end << endl;
-    int result = Gant.BFS(start, end);
-    cout << result << endl;
+    int max = 0, i_max, j_max, length;
+    for (int i = 0; i < tasks_count; i++) {
+        for (int j = 0; j < tasks_count; j++) {
+            length = -Gant.BFS(i, j);
+            if (length > max && length != INT_MAX) {
+                i_max = i;
+                j_max = j;
+                max = length;
+            }
+            // if (length != INT_MAX) { 
+            //     cout << i << "," << j << " : " << length << endl;
+            // }
+        }
+    }
+
+    cout << "Длина критического пути: " << max << endl;
+    cout << "Критический путь найден между задачами: " << endl;
+    Gant.get_task(i_max).print();
+    Gant.get_task(j_max).print();
+    cout << endl;
+
+    vector<int> path = Gant.BFS_path(i_max, j_max);
+    cout << "Путь :" << endl;
+    for (int i = path.size() - 1; i >= 0; i--) {
+        Gant.get_task(path[i]).print();
+    }
+    cout << endl;
+
+
     return 0;
 }

@@ -7,8 +7,8 @@ void Task::create(std::string _task_name, int _start_time, int _end_time) {
     weight = end_time - start_time;
 }
 
-void Task::print_data() {
-    std::cout << task_name << " " << start_time << " " << end_time << std::endl;
+void Task::print() {
+    std::cout << "\"" <<  task_name << "\" (" << start_time << ", " << end_time << ")" << std::endl;
 }
 
 int Task::get_start_time() {

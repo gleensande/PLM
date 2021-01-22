@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <climits>
+#include <stack>
 #include "task.hpp"
 
 using std::cin;
@@ -10,23 +11,26 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::queue;
+using std::stack;
 
 
 // класс неориентированного графа, основанный на списках
 class CListGraph {
+ private:
+    vector<Task> tasks;
+    vector<vector<int>> edges;
+    vector<bool> visited;
+    vector<int> topological;
  public:
     CListGraph(size_t vertices_count);
     void AddEdge(int v1, int v2);
-    int VerticesCount() const { return edges_.size(); }
+    int VerticesCount() const { return edges.size(); }
     vector<int> GetConnectedVertices(int vertex) const;
-    int BFS(int start_vertex, int stop_vertex);
 	int getVerticesCount() const;
     void set_task(int i, Task t);
     Task get_task(int i);
     void print_graph();
-    int search_earliest_task();
-    int search_latest_task();
- private:
-    vector<Task> tasks;
-    vector<vector<int>> edges_;
+    void DFS();
+    int BFS(int start_vertex, int stop_vertex);
+    vector<int> BFS_path(int start_vertex, int stop_vertex);
 };
