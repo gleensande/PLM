@@ -38,7 +38,8 @@ void CListGraph::print_graph() {
     }
 }
 
-void CListGraph::DFS(/*int start, int finish*/) {
+// обход графа в глубину 
+/*void CListGraph::DFS() {
     stack<int> s;
     int strat_v = 0;
     s.push(strat_v);
@@ -58,9 +59,9 @@ void CListGraph::DFS(/*int start, int finish*/) {
         if (out_count == 0) 
             topological.push_back(vertex);
     }
-}
+}*/
 
-// обход графа
+// обход графа в ширину
 int CListGraph::BFS(int start_vertex, int stop_vertex) {
     queue<int> q;
     vector<bool> visited(VerticesCount(), false);    
@@ -96,7 +97,7 @@ int CListGraph::BFS(int start_vertex, int stop_vertex) {
     return s[stop_vertex];
 }
 
-// обход графа
+// обход графа в ширину с возвратом пути
 vector<int> CListGraph::BFS_path(int start_vertex, int stop_vertex) {
     queue<int> q;
     vector<bool> visited(VerticesCount(), false);    

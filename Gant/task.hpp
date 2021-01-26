@@ -14,5 +14,4 @@ class Task {
     int get_start_time();
     int get_end_time();
     int get_weight();
-    int get_reverse_weight();
 };

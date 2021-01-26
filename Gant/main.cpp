@@ -51,13 +51,10 @@ int main() {
                 j_max = j;
                 max = length;
             }
-            // if (length != INT_MAX) { 
-            //     cout << i << "," << j << " : " << length << endl;
-            // }
         }
     }
 
-    cout << "Длина критического пути: " << max << endl;
+    cout << "Длина критического пути: " << max << endl << endl;
     cout << "Критический путь найден между задачами: " << endl;
     Gant.get_task(i_max).print();
     Gant.get_task(j_max).print();

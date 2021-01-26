@@ -14,13 +14,12 @@ using std::queue;
 using std::stack;
 
 
-// класс неориентированного графа, основанный на списках
 class CListGraph {
  private:
     vector<Task> tasks;
     vector<vector<int>> edges;
     vector<bool> visited;
-    vector<int> topological;
+    // vector<int> topological;
  public:
     CListGraph(size_t vertices_count);
     void AddEdge(int v1, int v2);
@@ -30,7 +29,7 @@ class CListGraph {
     void set_task(int i, Task t);
     Task get_task(int i);
     void print_graph();
-    void DFS();
+    // void DFS();
     int BFS(int start_vertex, int stop_vertex);
     vector<int> BFS_path(int start_vertex, int stop_vertex);
 };

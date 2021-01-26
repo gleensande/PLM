@@ -22,7 +22,3 @@ int Task::get_end_time() {
 int Task::get_weight() {
     return weight;
 }
-
-int Task::get_reverse_weight() {
-    return -weight;
-}
